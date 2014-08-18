@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$TITLE}</title>
+</head>
+{literal}
+<!--基本樣式-->
+<!--<link type="text/css" href="css/basic.css" rel="stylesheet" />-->
+<style>
+		body { font-size: 62.5%;background-color:#dddded }
+		label, input { display:block; }
+		input.text { margin-bottom:12px; width:95%; padding: .4em; }
+		fieldset { padding:0; border:0; margin-top:25px; }
+		h1 { font-size: 1.2em; margin: .6em 0; }
+		div#users-contain { width: 350px; margin: 20px 0; }
+		div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+		div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+		.ui-dialog .ui-state-error { padding: .3em; }
+		.validateTips { border: 1px solid transparent; padding: 0.3em; }
+		.ui-autocomplete-loading { background: white url('images/ui-anim_basic_16x16.gif') right center no-repeat; }
+		
+		
+
+</style>
+
+<!--jquery ui-->
+<!--
+<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+-->
+
+
+<link type="text/css" href="modules/FATSO_TEST/includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="modules/FATSO_TEST/includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="modules/FATSO_TEST/includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+		
+<script type="text/JavaScript"> 
+$(function() {
+             
+
+    
+    
+    
+    
+             //button  submit cant use icon
+				         $( "div[name='menu_a'],input:submit").button({
+				             icons: {
+                 primary: "ui-icon-lightbulb"
+                 }
+				         });
+				         
+				         
+				         
+				         
+				         
+				         $( "input:text").addClass("text ui-widget-content ui-corner-all");
+				         
+				         $( "input[name='SID']" ).autocomplete({
+		           	source: function( request, response ) {
+		           	        $.ajax({
+				                  	url: "ajax.php",
+				                  	dataType: "json",
+				                  	data: {
+				                  	        file: "{/literal}{$smarty.request.file}{literal}",
+				                  	        name: "{/literal}{$smarty.request.name}{literal}",
+				                  	      	   op: "1",
+				                  	      	  SID: $("input[name='SID']").val()
+				                  	      },
+				                  	success: function( data ) {
+				                  	         response( $.map( data, function( item ) {
+				                  		        	         return {
+				                  		        	         	label: item.NAME ,
+				                  		        	         	value: item.SID
+				                  		        	         }
+				                  		        })); 
+				                  	}
+				                  });
+				                  
+			           },
+			           minLength: 3,
+		           	//select: function( event, ui ) {
+		           	//	alert( ui.item ?
+		           	//		"Selected: " + ui.item.value + " aka " + ui.item.id :
+		           	//		"Nothing selected, input was " + this.value );
+		           	//},
+			           open: function() {
+			           	$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+			           },
+			           close: function() {
+			           	$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+			           }
+
+		           });
+		           
+		           $("input[name='SID1']").autocomplete({
+		           	source: function( request, response ) {
+		           	        $.ajax({
+				                  	url: "ajax.php",
+				                  	dataType: "json",
+				                  	data: {
+				                  	        file: "{/literal}{$smarty.request.file}{literal}",
+				                  	        name: "{/literal}{$smarty.request.name}{literal}",
+				                  	      	   op: "1",
+				                  	      	  SID: $("input[name='SID1']").val()
+				                  	      },
+				                  	success: function( data ) {
+				                  	         response( $.map( data, function( item ) {
+				                  		        	         return {
+				                  		        	         	label: item.NAME ,
+				                  		        	         	value: item.SID
+				                  		        	         }
+				                  		        })); 
+				                  	}
+				                  });
+				                  
+			           },
+			           minLength: 3
+		           	//select: function( event, ui ) {
+		           	//	alert( ui.item ?
+		           	//		"Selected: " + ui.item.value + " aka " + ui.item.id :
+		           	//		"Nothing selected, input was " + this.value );
+		           	//},
+			           //open: function() {
+			           //	$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+			           //},
+			           //close: function() {
+			           //	$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+			           //}
+
+		           });
+		           
+		           $( "input[name='OWNER']" ).autocomplete({
+		           	source: function( request, response ) {
+				                  $.ajax({
+				                  	url: "ajax.php",
+				                  	dataType: "json",
+				                  	data: {
+				                  	        file: "{/literal}{$smarty.request.file}{literal}",
+				                  	        name: "{/literal}{$smarty.request.name}{literal}",
+				                  	      	   op: "2",
+				                  	      	  OWNER: $( "input[name='OWNER']" ).val()
+				                  	      },
+				                  	success: function( data ) {
+				                  	         response( $.map( data, function( item ) {
+				                  		        	         return {
+				                  		        	         	label: item.LABEL ,
+				                  		        	         	value: item.VALUE
+				                  		        	         }
+				                  		        })); 
+				                  	}
+				                  });
+			           },
+			           minLength: 2,
+		           	//select: function( event, ui ) {
+		           	//	alert( ui.item ?
+		           	//		"Selected: " + ui.item.value + " aka " + ui.item.id :
+		           	//		"Nothing selected, input was " + this.value );
+		           	//},
+			           open: function() {
+			           	$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+			           },
+			           close: function() {
+			           	$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+			           }
+
+		           });
+
+				         
+				         
+				         //$("div[name='main_header']").addClass("ui-widget-header").addClass("ui-corner-all");
+				         
+//.ui-helper-clearfix
+//ui-helper-clearfix
+//ui-corner-all
+//.ui-dialog .ui-dialog-titlebar
+
+//ui-widget-content
+});
+</script>
+{/literal}
+<body>
+       <table name="main-table">
+              <tr>
+                  <td colspan="2" style="text-align:center;height:10px;">
+                  <div name="main_header" style="font-size:18px;" class="ui-widget-header">E-flow Control Panel</div></td>
+              </tr>
+              <tr valign="top">
+                  <td style="width:150px;height:600px;">{include file="menu.htm"}</td>
+                  <td style="width:650px;height:600px;">
+                       <div id="users-contain" class="ui-widget">
+                       	<table class="ui-widget ui-widget-content">
+                       		<thead><p>current situation:</p>
+                       			<tr class="ui-widget-header">
+                       				<th>WAE ORG</th>
+                       				<th>Without Owner</th>
+                       				<th>OnGoing</th>
+                       			</tr>
+                       		</thead>
+                       		<tbody>
+                       			<tr>
+                       				<td>{$ORG_COUNT}</td>
+                       				<td>{$WOU_COUNT}</td>
+                       				<td>{$OGI_COUNT}</td>
+                       			</tr>
+                       		</tbody>
+                       	</table>
+                       </div>
+<hr>
+                       
+                       <form action="" method="post" enctype="multipart/form-data">
+                       <div class="ui-widget">
+                         <P>SID process:</P>
+                         <table>
+                       		
+                       			<tr>
+                       				<td>SID:<input type="text" name="SID"></td>
+                       				<td>Owner:<input type="text" name="OWNER"></td>
+                       				<td><input type="submit" name="submit1" value="submit"></td>
+                       			</tr>
+                       		
+                       	</table>
+                       </div>
+                       </form>
+<hr>                       
+                       <form action="" method="post" enctype="multipart/form-data">
+                       <div class="ui-widget">
+                         <P>SID query:</P>
+                         <table>
+                       		
+                       			<tr>
+                       				<td>SID:<input type="text" name="SID1"></td>
+                       				<td><input type="submit" name="submit2" value="submit"></td>
+                       			</tr>
+                       			<tr>
+                       				<td colspan="2"><div>{$sub_html}</div></td>
+                       			</tr>
+                       		
+                       	</table>
+                       </div>
+                       </form>
+                  </td>
+              </tr>
+       </table>
+
+
+
+</body>
+</html>

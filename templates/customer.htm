@@ -1,0 +1,154 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+
+</head>
+
+{literal}
+   <!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+	
+		<script type="text/javascript">
+			$(function(){
+			                      $(".jtable th,.edit_table_h th").each(function(){
+ 
+                             $(this).addClass("ui-state-default");
+ 
+                        });
+                         
+                        $(".jtable td,.edit_table_h td").each(function(){
+ 
+                           $(this).addClass("ui-widget-content");
+ 
+                       });
+                        //游標在上面時變色
+                        $(".jtable tr").hover(
+                            function(){
+                             $(this).children("td").addClass("ui-state-hover");
+                            },
+                            function()
+                            {
+                             $(this).children("td").removeClass("ui-state-hover");
+                            }
+                        );
+                        $(".jtable tr").click(function(){
+                           $(this).children("td").toggleClass("ui-state-highlight");
+                       });
+
+				
+
+				// Datepicker
+				$('#datepicker').datepicker({
+					inline: true
+				});
+				
+				//button
+				$( "button,input:submit,div[name='menu']").button();
+
+				 //試作頁面切換
+				 
+				
+			});
+		</script>
+		
+			
+		{/literal}
+
+
+<body>
+{*左側menu*}
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}
+           {if $smarty.cookies.wdcbcUNACCEPT!="" and $smarty.cookies.wdcbcUNACCEPT!=0}<font color="red">待轉倉/未接收:{$smarty.cookies.wdcbcUNACCEPT}</font>{/if}</div>
+                     
+                     <tr><td valign="top" name="menu-td">
+                           <div>
+                     {include file="menu.htm"}
+                     	     </div>
+                     </td><td valign="top"><div style="width:700px;height:600px;text-align:center;">
+                     	
+                     
+                     {*主要畫面*}
+                                    <form action="" method="post" ENCTYPE="multipart/form-data">
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                    <tr>
+                                    		<th colspan="2"><div name="main_title">{$title}</div></th>
+                                    		</tr>
+                                    	<tr>
+                                    		<th><div style="width:100px;text-align:center;">{literal}姓名{/literal}</div></th>
+                                    		<td><div style="width:600px;text-align:center;"><input type="text" class="normal-input-text" name="name"  value="{$edata.NAME}" style="width:100%;"></div></td>
+                                    		</tr>
+                                    		<tr>
+                                    		<th><div style="width:100px;text-align:center;">{literal}電話{/literal}</div></th>
+                                    		<td><div style="width:600px;text-align:center;"><input type="text"  class="normal-input-text" name="phone" value="{$edata.PHONE}" style="width:100%;"></div></td>
+                                    		</tr>
+                                    		<tr>
+                                    		<th><div style="width:100px;text-align:center;">{literal}EMAIL{/literal}</div></th>
+                                    		<td><div style="width:600px;text-align:center;"><input type="text"  class="normal-input-text" name="email" value="{$edata.EMAIL}"  style="width:100%;"></div></td>
+                                    	</tr>
+                                    	<tr>
+                                    		<th><div style="width:100px;text-align:center;">{literal}地址{/literal}</div></th>
+                                    		<td><div style="width:600px;text-align:center;"><input type="text"  class="normal-input-text" name="addr" value="{$edata.ADDR}"  style="width:100%;"></div></td>
+                                    	</tr>
+                                    	<tr>
+                                    		<th><div style="width:100px;text-align:center;">{literal}庫別{/literal}</div></th>
+                                    		<td><div style="width:600px;text-align:center;">{html_options name=sid options=$store_option selected=$edata.SID}</div></td>
+                                    	</tr>
+                                    	<tr>
+                                    		<th><div style="width:100px;text-align:center;">{literal}備註{/literal}</div></th>
+                                    		<td><div style="width:600px;text-align:center;"><input type="text"  class="normal-input-text" name="remark" value="{$edata.REMARK}"  style="width:100%;"></div></td>
+                                    	</tr>
+                                    	<tr>
+                                    		      <td colspan="2" style="text-align:right;">
+                                    		               <input type="hidden" name="id" value="{$edata.ID}">
+                                    		               {if $edit==1}
+                                    		               <input type="submit" id="submit" name="submit" value="編輯">
+                                    		               {else}
+                                    		               <input type="submit" id="submit" name="submit" value="新增">
+                                    		               {/if}
+                                    		     </td>
+                                    	</tr>
+                                    </table>
+                                    </form>
+                                    <br>
+                                    
+                                    <div>
+                                    {*顧客清單*}
+                                    <table class="jtable" style="font-size:12px;">
+                                               <tr><th><div style="width:45px;text-align:center;">{literal}項次{/literal}</div></th>
+                                                   <th><div style="width:80px;text-align:center;">{literal}姓名{/literal}</div></th>
+                                                   <th><div style="width:100px;text-align:center;">{literal}電話{/literal}</div></th>
+                                                   <th><div style="width:120px;text-align:center;">{literal}EMAIL{/literal}</div></th>
+                                                   <th><div style="width:160px;text-align:center;">{literal}地址{/literal}</div></th>
+                                                   <th><div style="width:80px;text-align:center;">{literal}庫別{/literal}</div></th>
+                                                   <th><div style="width:100px;text-align:center;">{literal}備註{/literal}</div></th>
+                                               </tr>
+                                               {foreach name=cc from =$cdata item=item key=key}
+                                               <tr><td><div style="text-align:center;">{$smarty.foreach.cc.iteration}</div></td>
+                                                     <td><div style="text-align:center;"><a href="customer?edit=1&id={$item.ID}" >{$item.NAME}</a></div></td>
+                                                     <td><div style="text-align:center;">{$item.PHONE}&nbsp;</div></td>
+                                                     <td><div style="text-align:center;">{$item.EMAIL}&nbsp;</div></td>
+                                                     <td><div style="text-align:center;">{$item.ADDR|truncate:15}&nbsp;</div></td>
+                                                     <td><div style="text-align:center;">{$item.STORE_NAME}&nbsp;</div></td>
+                                                     <td><div style="text-align:center;"><a href="prod_list?id={$item.ID}" target="_BLANK">{$item.REMARK|truncate:15}&nbsp;</a></div></td>
+                                               </tr>
+                                               {/foreach}
+                                    <table>
+                                    </div>
+                                    </div>
+                     
+                     
+                     
+                     
+                     	
+                     </td></tr>
+           </table>
+
+</body>
+</html>
+

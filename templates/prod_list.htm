@@ -1,0 +1,86 @@
+<html>
+<head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+{literal}
+<!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+<script type="text/JavaScript">
+</script>
+<script type="text/JavaScript"> 
+$(document).ready(function(){
+            
+            //table 樣式
+            $(".jtable th,.edit_table_h th,.rt-table th").each(function(){
+                 $(this).addClass("ui-state-default");
+            });
+                         
+            $(".jtable td,.edit_table_h td,.rt-table td").each(function(){
+                $(this).addClass("ui-widget-content");
+            });
+            
+            //游標在上面時變色
+            $(".jtable tr").hover(
+                function(){
+                 $(this).children("td").addClass("ui-state-hover");
+                },
+                function()
+                {
+                 $(this).children("td").removeClass("ui-state-hover");
+                }
+            );
+            
+            $(".jtable tr").click(function(){
+                $(this).children("td").toggleClass("ui-state-highlight");
+            });
+                        
+            //button
+				        $( "button,input:submit,div[name='menu']").button();
+				        
+				        
+            
+                    
+});
+</script>
+{/literal}
+<body>
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}</div>
+                     
+                     <tr><td><div style="width:700px;height:600px;text-align:center;">
+                     
+                                    
+                                    <div>
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                    {*表頭*}
+                                    <tr><th colspan="6"><div name="main_title">{$title}</div></th></tr>
+                                    <tr>
+                                    		<th><div style="width:100px;text-align:center;">{literal}類別{/literal}</div></th>
+                                    		<th><div style="width:200px;text-align:center;">{literal}品名{/literal}</div></th>
+                                    		<th><div style="width:100px;text-align:center;">{literal}購買日期{/literal}</div></th>
+                                    </tr>
+                                    {foreach from=$ddata item=item key=key}
+                                     <tr>
+                                         <td style="text-align:center;">{$item.PROD_TYPE}</td>
+                                         <td style="text-align:center;">{$item.PROD_NAME}</td>
+                                         <td style="text-align:center;">{$item.CTIME|date_format:"%Y-%m-%d"}</td>
+                                     </tr>
+                                    {/foreach}
+                                    </table>
+                                    </div>
+                                    <br>
+                                    
+                            </div>
+                     </td></tr>
+           </table>
+
+</body>
+</html>
+

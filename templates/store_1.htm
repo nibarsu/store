@@ -1,0 +1,44 @@
+
+                     	
+                     
+                     {*主要畫面*}
+                                    <form action="" method="post" ENCTYPE="multipart/form-data">
+                                    <table border="1" cellspacing="1" cellpadding="3" style="width:750px;"><div>{$title}</div>{*m_title*}
+                                    	<tr>
+                                    		<td><div style="width:100;text-align:center;">{literal}倉庫名稱{/literal}</div></td>
+                                    		<td><div style="width:580;text-align:center;"><input type="text" name="name" size="50" value="{$edata.NAME}" ></div></td>
+                                    		</tr>
+                                    		<tr>
+                                    		<td><div style="width:100;text-align:center;">{literal}備註{/literal}</div></td>
+                                    		<td><div style="width:580;text-align:center;"><input type="text" name="remark" size="50" value="{$edata.REMARK}" ></div></td>
+                                    		</tr>
+                                    	<tr>
+                                    		<td colspan="2" ><div tyle="text-align:center;">
+                                    		<input type="hidden" name="id" value="{$edata.ID}">
+                                    		{if $edit==1}
+                                    		<input type="submit" name="submit" value="編輯">
+                                    		{else}
+                                    		<input type="submit" name="submit" value="新增">
+                                    		{/if}
+                                    		要再增加必填欄位
+                                    		</div></td>
+                                    	</tr>
+                                    </table>
+                                    </form>
+                                    {if sizeof($cdata) >0}
+                                    <hr>
+                                    <div>
+                                    <table border="1" cellspacing="0" cellpadding="0">
+                                               <tr><td><div style="text-align:center;">{literal}項次{/literal}</div></td>
+                                                   <td><div style="text-align:center;">{literal}倉庫名稱{/literal}</div></td>
+                                                   <td><div style="text-align:center;">{literal}備註{/literal}</div></td>
+                                               </tr>
+                                               {foreach name=cc from =$cdata item=item key=key}
+                                               <tr><td><div style="text-align:center;">{$smarty.foreach.cc.iteration}</div></td>
+                                                     <td><div style="width:200px;text-align:center;"><a href="store?edit=1&id={$item.ID}" >{$item.NAME}</a></div></td>
+                                                     <td><div style="width:100px;text-align:center;">{$item.REMARK}&nbsp;</div></td>
+                                               </tr>
+                                               {/foreach}
+                                    <table>
+                                    </div>
+                                    {/if}

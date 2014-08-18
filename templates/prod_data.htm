@@ -1,0 +1,212 @@
+<html>
+<head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+{literal}
+<!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+		<link rel="stylesheet" href="includes/pagination/pagination.css" />
+		<script type="text/javascript" src="includes/pagination/jquery.pagination.js"></script>
+		
+  <script type="text/JavaScript">
+  function pageselectCallback(page_index, jq){
+                var $new_content = $('#hiddenresult div.result:eq('+page_index+')').clone();
+                //alert($('#hiddenresult div.result:eq(0)').html());
+                $('#Searchresult').empty().append($new_content);
+                return false;
+            }
+  function initPagination() {
+                // count entries inside the hidden content
+                var num_entries = jQuery('#hiddenresult div.result').length;
+                //alert(num_entries);
+                // Create content inside pagination element
+                $("#Pagination").pagination(num_entries, {
+                    callback: pageselectCallback,
+                    items_per_page:1 // Show only one item per page
+                });
+             }
+  </script>
+  <script type="text/JavaScript"> 
+$(document).ready(function(){
+            
+            //table 樣式
+            $(".jtable th,.edit_table_h th,.rt-table th").each(function(){
+                 $(this).addClass("ui-state-default");
+            });
+                         
+            $(".jtable td,.edit_table_h td,.rt-table td").each(function(){
+                $(this).addClass("ui-widget-content");
+            });
+            
+            //游標在上面時變色
+            $(".jtable tr").hover(
+                function(){
+                 $(this).children("td").addClass("ui-state-hover");
+                },
+                function()
+                {
+                 $(this).children("td").removeClass("ui-state-hover");
+                }
+            );
+            
+            $(".jtable tr").click(function(){
+                $(this).children("td").toggleClass("ui-state-highlight");
+            });
+                        
+            //button
+				        $("button,input:submit,div[name='menu']").button();
+				                    
+				        //autocomplete
+				        $( "input[name='pid[]']" ).autocomplete({
+		          	source: function( request, response ) {
+				                 $.ajax({
+				                 	url: "ajax.php",
+				                 	dataType: "json",
+				                 	data: {
+				                 	      	   cal: "GetProdName",
+				                 	      	  name: $("input[name='pid[]']").val()
+				                 	      },
+				                 	error: function(msg) {
+                          alert("fail!!"+msg);
+                      },
+				                 	success: function( data ) {
+				                 	         response( $.map( data, function( item ) {
+				                 		        	         return {
+				                 		        	         	label: item.LABEL ,
+				                 		        	         	value: item.VALUE
+				                 		        	         }
+				                 		        })); 
+				                 	}
+				                 });
+			          },
+			          minLength: 2,
+		          	//select: function( event, ui ) {
+		          	//	alert( ui.item ?
+		          	//		"Selected: " + ui.item.value + " aka " + ui.item.id :
+		          	//		"Nothing selected, input was " + this.value );
+		          	//},
+			          open: function() {
+			          	$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+			          },
+			          close: function() {
+			          	$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+			          }
+            
+		          });
+		          
+		          //分頁
+		          initPagination();
+
+                    
+});
+</script>
+{/literal}
+<body>
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}
+           {if $smarty.cookies.wdcbcUNACCEPT!="" and $smarty.cookies.wdcbcUNACCEPT!=0}<font color="red">待轉倉/未接收:{$smarty.cookies.wdcbcUNACCEPT}</font>{/if}
+           </div>
+                     
+                     <tr><td valign="top" name="menu-td">
+                           <div>
+                     {include file="menu.htm"}
+                     	     </div>
+                     </td><td><div style="width:700px;height:800px;text-align:center;">
+                     	
+                     
+                     {*主要畫面*}
+                     
+                                    
+                                    <form id="barcode" action="" method="post" ENCTYPE="multipart/form-data">
+                                    <div>
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                    {*表頭*}
+                                    <tr>
+                                    		<th colspan="6"><div name="main_title" style="line-height:20px;">{$title}</div></th>
+                                    </tr>
+                                    <tr>
+                                      <th><div style="width:80px;text-align:center;">{literal}商品類別{/literal}</div></th>
+                                    		<td><div style="width:150px;text-align:center;">{html_options name=type options=$TYPE_OPTION selected=$qtype}</div></td>
+                                      <th><div style="width:60px;text-align:center;">{literal}品名{/literal}</div></th>
+                                    		<td><div style="width:200px;text-align:center;"><input type="text" name="qname" name="{$qname}"></div></td>
+                                    </tr>
+                                    <tr>
+                                    		<td colspan="4" style="text-align:right;">
+                                    		{*<input type="submit" name="gen_cost_rpt" value="成本表" style="font-size:12px;" />|*}
+                                    		<input type="submit" name="submit" value="查詢" style="font-size:12px;" />
+                                    		</td>
+                                    	</tr>
+                                    </table>
+                                    </div>
+                                    </form>
+                                    <hr>{*表身*}
+                                    <div style="margin:0;padding:0;width:700px;">
+                                    <form id="proddata" action="" method="post" ENCTYPE="multipart/form-data">
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                          <tr style="line-height:20px;">
+                                              <th style="width:150px;">商品類別</th>
+                                              <th style="width:150px;">商品名稱</th>
+                                          </tr>
+                                          <tr style="line-height:20px;">
+                                              <td>{$e.prod_type}</td>
+                                              <td><input type="text" name="prod_name" value="{$e.NAME}"></td>
+                                          </tr>
+                                          <tr style="line-height:20px;">
+                                              <td colspan="3" style="text-align:right;">
+                                              <input type="hidden" name="prod_id" value="{$e.ID}">
+                                              <input type="hidden" name="qname" value="{$qname}">
+                                              <input type="hidden" name="qtype" value="{$qtype}">
+                                              <input type="submit" name="submit" value="儲存" style="font-size:12px;" /></td>
+                                          </tr>
+                                    </table>
+                                    </form>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <br style="clear:both;" />
+                                    <div id="Searchresult">
+                                        {*This content will be replaced when pagination inits.*}
+                                    </div>
+                                    <div id="Pagination"></div>
+                                    <!-- Container element for all the Elements that are to be paginated -->
+                                    <div id="hiddenresult" style="display:none;">
+                                        {foreach name=pp from =$page_data item=showdata key=page}
+                                        <div class="result">
+                                        <table class="jtable" style="width:700px;font-size:12px;">
+                                        <tr style="line-height:20px;">
+                                            <th style="width:60px;"><div style="text-align:center;">{literal}編號{/literal}</div></th>
+                                            <th style="width:160px;"><div style="text-align:center;">{literal}商品類別{/literal}</div></th>
+                                            <th style="width:300px;"><div style="text-align:center;">{literal}商品名稱{/literal}</div></th>
+                                        </tr>
+                                        {foreach name=inpage from=$showdata item=item key=key}
+                                        <tr style="line-height:20px;">
+                                                   <td><div style="text-align:center;">{$item.ID}</div></td>
+                                                   <td><div style="text-align:center;">{$item.PROD_TYPE}</div></td>
+                                                   <td><a href="prod_data?edit=1&id={$item.ID}&qtype={$qtype}&qname={$qname}" ><div style="text-align:center;">{$item.NAME}</div></a></td>
+                                        </tr>
+                                        {/foreach}
+                                        </table>
+                                        </div>
+                                        {/foreach}
+                                        
+                                    </div>
+                                    
+                                    
+                                    
+                                    </div>
+                     </td></tr>
+           </table>
+
+</body>
+</html>
+

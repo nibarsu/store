@@ -1,0 +1,88 @@
+
+                     {*主要畫面*}
+                     
+                                    {if $edit==1}
+                                    <form id="barcode" action="" method="post" ENCTYPE="multipart/form-data">
+                                    <table border="1" cellspacing="1" cellpadding="3" style="width:750px;"><div>{$title}</div>{*m_title*}
+                                    	<tr>
+                                    		<td><div style="width:100;text-align:center;">{literal}請輸入條碼{/literal}</div></td>
+                                    		<td><div style="width:580;text-align:center;"><input type="text" name="CODE" size="50" ></div></td>
+                                    		</tr>
+                                    		
+                                    	<tr>
+                                    		<td colspan="2" ><div tyle="text-align:center;">
+                                    		<input type="hidden" name="id" value="{$edata.ID}">
+                                    		<input type="submit" name="submit" value="查詢">
+                                    		</div></td>
+                                    	</tr>
+                                    </table>
+                                    </form>
+                                    {/if}
+                                    
+                                    
+                                    
+                                    {if $edit==3}
+                                    <form action="" method="post" ENCTYPE="multipart/form-data">
+                                    <table border="1" cellspacing="1" cellpadding="3" style="width:750px;"><div>{$title1}</div>{*m_title*}
+                                    	<tr>
+                                    		<td><div style="text-align:center;">{literal}廠商類別{/literal}</div></td>
+                                    		<td><div style="text-align:center;">{$CDATA.VENDOR_NAME}</div></td>
+                                    		<td><div style="text-align:center;">{literal}商品類別{/literal}</div></td>
+                                    		<td><div style="text-align:center;">{$CDATA.TYPE_NAME}</div></td>
+                                    		</tr>
+                                    		<tr>
+                                    		<td><div style="text-align:center;">{literal}商品名稱{/literal}</div></td>
+                                    		<td colspan="3"><div style="text-align:center;">{$CDATA.NAME}</div></td>
+                                    		</tr>
+                                    		</table>
+                                    		<table border="1" cellspacing="1" cellpadding="3" style="width:750px;">
+                                    		<tr>
+                                    		<td colspan="4"><div style="text-align:center;">{literal}庫存資訊{/literal}</div></td>
+                                    		</tr>
+                                    		<tr>
+                                    		<td><div style="text-align:center;">{literal}庫別{/literal}</div></td>
+                                    		<td><div style="text-align:center;">{literal}在庫數量{/literal}</div></td>
+                                    		<td><div style="text-align:center;">{literal}預轉出{/literal}</div></td>
+                                    		<td><div style="text-align:center;">{literal}預轉入{/literal}</div></td>
+                                    		</tr>
+                                    		 {foreach from=$IDATA key=key item=item}
+                                    		<tr>
+                                    		<td><div style="text-align:center;">{$item.NAME}</div></td>
+                                    		<td><div style="text-align:center;">{$item.QTY1|number_format}</div></td>
+                                    		<td><div style="text-align:center;">{$item.QTY2|number_format}</div></td>
+                                    		<td><div style="text-align:center;">{$item.QTY3|number_format}</div></td>
+                                    		</tr>
+                                    		{/foreach}
+                                    		</table>
+                                    		<table border="1" cellspacing="1" cellpadding="3" style="width:750px;">
+                                    		<tr>
+                                    		<td colspan="4" ><div tyle="text-align:center;">{literal}出貨資訊{/literal}</div></td>
+                                    	</tr>
+                                    		<tr>
+                                    		<td><div style="text-align:center;">{literal}庫別{/literal}</div></td>
+                                    		<td><div style="text-align:center;">{html_options name=SID options=$S_OPTION }</div></td>
+                                    		<td><div style="text-align:center;">{literal}數量{/literal}</div></td>
+                                    		<td><div style="text-align:center;"><input type="text" name="QTY" ></div></td>
+                                    		</tr>
+                                    		<tr>
+                                    		<td><div style="text-align:center;">{literal}售價{/literal}</div></td>
+                                    		<td><div style="text-align:center;"><input type="text" name="PRICE" ></div></td>
+                                    		<td><div style="text-align:center;">{literal}進貨時間{/literal}</div></td>
+                                    		<td><div style="text-align:center;"><input type="text" name="RDATE" id="RDATE" size=10 value="{$RDATE}"><input type="text" name="RTIME" size=10 value="{$RTIME}"></div></td>
+                                    		</tr>
+                                    	
+                                    	
+                                    	<tr>
+                                    		<td colspan="4" ><div tyle="text-align:center;">
+                                    		<input type="hidden" name="CODE" value="{$CODE}">
+                                    		<input type="hidden" name="PID" value="{$PID}">
+                                    		<input type="submit" name="submit" value="儲存">
+                                    		</div></td>
+                                    	</tr>
+                                    </table>
+                                    </form>
+                                    {/if}
+                                   
+
+                     
+

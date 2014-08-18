@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>條碼列印</title>
+
+</head>
+<!-- MeadCo Security Manager -->
+<object id=factory style="display:none" classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814"  codebase="/includes/scriptx/smsx.cab#Version=6,6,440,20">
+</object>
+
+{literal}
+<script>
+	function printWindow() {
+  	// 頁首文字 (不印)
+  	factory.printing.header = "";
+  	// 頁尾文字 (不印)
+  	factory.printing.footer = "";
+  	// false 橫印，true 直印
+  	factory.printing.portrait = true;
+  	// 左邊界
+  	factory.printing.leftMargin = 0;
+  	// 上邊界
+  	factory.printing.topMargin = 0;
+  	// 右邊界
+  	factory.printing.rightMargin = 0;
+  	// 下邊界
+  	factory.printing.bottomMargin = 0;
+  	// 預覽
+  	factory.printing.Preview();
+	}
+</script>
+<style type="text/css">
+*{margin:0;padding:0}
+</style>
+<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="includes/jquery-barcode.js"></script>
+<script type="text/JavaScript">
+$(document).ready(function(){
+                $("div[name='barcodetarget']").each(function(){
+                //alert($(this).html());
+                var code=$(this).html();
+                $(this).barcode(code,"code93",{
+                                             barWidth:1, 
+                                             barHeight:25,
+                                             //showHRI: false,
+                                             marginHRI: 0,
+                                             fontSize: 14,
+                                             posX: 0,
+                                             posY: 0
+                                             });
+                        //$(this).css("position", "absolute").css("left", ($(this).parent("div").width())*0.13);
+                        var w=$(this).parent("div").width();
+                        //$(this).width(w);
+                        //alert($(this).parent("div").width());
+                        
+                        
+                });
+                
+                //雙切
+                $("div[name='barcodetarget2']").each(function(){
+                //alert($(this).html());
+                var code=$(this).html();
+                $(this).barcode(code,"code93",{
+                                             barWidth:1, 
+                                             barHeight:15,
+                                             showHRI: false,
+                                             //marginHRI: 0,
+                                             //fontSize: 16,
+                                             posX: 0,
+                                             posY: 3
+                                             });
+                        //$(this).css("position", "absolute").css("left", ($(this).parent("div").width())*0.13);
+                        var w=$(this).parent("div").width();
+                        //$(this).width(w);
+                        //alert($(this).parent("div").width());
+                        
+                        
+                });
+                
+                 
+});
+</script>
+{/literal}
+<body style="margin:0;padding:0;" onLoad="printWindow();">
+ 	{foreach from=$BDATA item=item key=key}
+ 	<div valign="center" name="tagcontainer" style="page-break-after:always;margin-left:15px;padding:0;text-align:center;width:51mm;height:23mm;">
+ 	{*<div style="padding:0;width:5cm;height:1mm;">
+ 	</div>*}
+ 	<div name="prodname" style="padding:0;width:5cm;font-size:11px;">{$item.NAME}</div>
+ 	<div name="barcodetarget" style="padding:0;width:5cm;">{$item.CODE}</div>
+ 	<div style="padding:0;width:5cm;height:4mm;">{*留空白用*}
+ 	</div>
+ 	<div name="barcodetarget2" style="padding:0;width:5cm;height:5mm">{$item.CODE}</div>
+ 	</div>
+  {/foreach}
+</body>
+</html>
+

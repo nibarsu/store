@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>{$title}</title>
+		{literal}
+	
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/eggplant/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+	
+		<script type="text/javascript">
+			$(function(){
+			// Accordion
+			//$("#accordion").accordion({ header: "h3" });
+			// Tabs
+			$('#tabs').tabs();
+			
+
+			
+			
+			//選取的tab 由0開始
+			//var $tabs = $('#tabs').tabs();
+   //var selected = $tabs.tabs('option', 'selected');
+   //alert(selected);
+
+				
+
+				// Datepicker
+				$('#datepicker').datepicker({
+					inline: true
+				});
+				
+				//button
+				$( "input:submit").button();
+
+				 //試作頁面切換
+				 
+				
+			});
+		</script>
+		<style type="text/css">
+			/*demo page css*/
+			body{ font: 100% "Trebuchet MS", sans-serif; margin: 50px;background-color:#444444;}
+			.demoHeaders { margin-top: 2em; }
+			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+			ul#icons {margin: 0; padding: 0;}
+			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+			ul#icons span.ui-icon {float: left; margin: 0 4px;}
+			div[name="tab-title"]{font-size:16px;}
+			div[name="menu_title"]{font-size:20px;}
+   div[name="menu_comn"] {font-size:12px;}
+			/*menu_title
+			menu_comn
+			*/
+			/*1.切換各tab的內容*/
+			/*2.整合各支php為同一支*/
+	
+
+		</style>	
+		{/literal}
+	</head>
+	<body>
+   
+		<!-- Tabs -->
+		<!--<h2 class="demoHeaders">Tabs</h2>-->
+		<div id="tabs">
+			<ul>
+				<li><a href="shipout_1"><div name="tab-title">{literal}出貨作業    {/literal}</div></a></li>
+				
+				<li><a href="receive_1"><div name="tab-title">{literal}入庫作業    {/literal}</div></a></li>
+				
+				<li><a href="expimp_1"><div name="tab-title">{literal}轉倉作業    {/literal}</div></a></li>
+				
+				<li><a href="customer_1"><div name="tab-title">{literal}客戶資料維護{/literal}</div></a></li>
+				
+				<li><a href="vendor_1"><div name="tab-title">{literal}廠商資料維護{/literal}</div></a></li>
+				
+				<li><a href="store_1"><div name="tab-title">{literal}倉庫資料維護{/literal}</div></a></li>
+			 <li><a href="prod_type_1"><div name="tab-title">{literal}商品類別維護{/literal}</div></a></li>
+				{*<li><a href="#tabs-8"><div name="tab-title">{literal}帳號維護    {/literal}</div></a></li>*}
+			</ul>
+			
+			
+			{*<div id="tabs-8">8{include file="store_1.htm"}</div>*}
+		</div>
+	
+		
+
+		
+				
+				
+		
+	
+		
+
+	</body>
+</html>
+
+

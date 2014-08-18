@@ -1,0 +1,131 @@
+<html>
+<head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+{literal}
+<!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+<script type="text/JavaScript">
+function countAMT(){
+         var TT=0;
+        $("input[name='cost[]']").each(function(){
+                        if (isNaN($(this).val()) || $(this).val()==""){
+                            TT=parseInt(TT)+0;
+                        }
+                        else{
+                            TT=parseInt(TT)+parseInt($(this).val());
+                        }
+        });
+        $("input[name='amt']").val(TT);
+}
+function ValidateNumber(e, pnumber){
+    	    //只能輸入數字
+    	    if (!/^\d+$/.test(pnumber)){
+    	       	alert("請輸入數字!!!");
+    	       	$(e).val("");
+    	       	   //if  (/^\d+/.exec($(e).val())==null){
+    	       	   //	   $(e).val("");
+    	       	   //}
+    	       	   //else{
+               	   //    $(e).val(/^\d+/.exec($(e).val()));
+               	   //}
+               	   
+         }
+         //if (parseInt($(e).val()) >100 || parseInt($(e).val()) ==0){
+         //	   	alert("請輸入1-100內的數字!!!");
+         //	   	$(e).val("");
+         //}
+         return false;
+}         
+</script>
+<script type="text/JavaScript"> 
+$(document).ready(function(){
+            
+            //table 樣式
+            $(".jtable th,.edit_table_h th,.rt-table th").each(function(){
+                 $(this).addClass("ui-state-default");
+            });
+                         
+            $(".jtable td,.edit_table_h td,.rt-table td").each(function(){
+                $(this).addClass("ui-widget-content");
+            });
+            
+            //游標在上面時變色
+            $(".jtable tr").hover(
+                function(){
+                 $(this).children("td").addClass("ui-state-hover");
+                },
+                function()
+                {
+                 $(this).children("td").removeClass("ui-state-hover");
+                }
+            );
+            
+            $(".jtable tr").click(function(){
+                $(this).children("td").toggleClass("ui-state-highlight");
+            });
+                        
+            //button
+				        $("button,input:submit,div[name='menu']").button();
+				                    
+				        
+
+                    
+});
+</script>
+{/literal}
+<body>
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}
+           {if $smarty.cookies.wdcbcUNACCEPT!="" and $smarty.cookies.wdcbcUNACCEPT!=0}<font color="red">待轉倉/未接收:{$smarty.cookies.wdcbcUNACCEPT}</font>{/if}
+           </div>
+                     
+                     <tr><td valign="top" name="menu-td">
+                           <div>
+                     {include file="menu.htm"}
+                     	     </div>
+                     </td><td valign="top"><div style="width:700px;height:600px;text-align:center;">
+                     	
+                     
+                     {*主要畫面*}
+                     
+                                    
+                                    <form id="barcode" action="" method="post" ENCTYPE="multipart/form-data">
+                                    <div>
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                    {*表頭*}
+                                    <tr>
+                                    		<th colspan="6"><div name="main_title">{$title}</div></th>
+                                    </tr>
+                                    <tr>{$MSG}
+                                      <th><div style="width:60px;text-align:center;">{literal}庫別{/literal}</div></th>
+                                    		<td><div style="width:100px;text-align:center;">{html_options name=sid options=$S_OPTION selected=$esid}</div></td>
+                                    		<td colspan="4" style="text-align:right;">
+                                    		<input type="file" name="upload_file">
+                                    		<input type="submit" id="submit" name="upload" value="匯入">
+                                    		{*<input type="submit" id="submit" name="query" value="比對資料">
+                                    		<input type="submit" id="submit" name="reset" value="清除">
+                                    		<input type="submit" id="submit" name="recover" value="復原">*}
+                                    		</td>
+                                    	</tr>
+                                    </table>
+                                    </div>
+                                    </form>
+                                    
+                                    
+                                    
+                                    
+                                    </div>
+                     </td></tr>
+           </table>
+
+</body>
+</html>
+

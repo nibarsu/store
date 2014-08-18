@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>盤點報表</title>
+
+</head>
+<!-- MeadCo Security Manager -->
+<object id=factory style="display:none" classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814"  codebase="/includes/scriptx/smsx.cab#Version=6,6,440,20">
+</object>
+
+
+{literal}
+<script>
+	function printWindow() {
+  	// 頁首文字 (不印)
+  	factory.printing.header = "";
+  	// 頁尾文字 (不印)
+  	factory.printing.footer = "";
+  	// false 橫印，true 直印
+  	factory.printing.portrait = true;
+  	// 左邊界
+  	factory.printing.leftMargin = 0.2;
+  	// 上邊界
+  	factory.printing.topMargin = 0.2;
+  	// 右邊界
+  	factory.printing.rightMargin = 0;
+  	// 下邊界
+  	factory.printing.bottomMargin = 0;
+  	// 預覽
+  	factory.printing.Preview();
+	}
+</script>
+{/literal}
+<body onLoad="printWindow();">
+ 	<div id="content" style="margin:0; position:relative; top:0;left:0;right:0; ">
+  <table border="0" cellspacing="0" cellpadding="0" style="width:20cm; position:relative; top:0;left:0;right:0;">
+   	<tr>
+    	<td><div align="center"><span class="style1">{*公司*}</span></div></td>
+  	</tr>
+  </table>
+                                    <div>
+                                    <table class="jtable">
+                                           <tr>
+                                               <th style="width:80px;text-align:center;">庫別</th>
+                                               <th style="width:300px;text-align:center;">品名</th>
+                                               <th style="width:80px;text-align:center;">在庫數量</th>
+                                               <th style="width:80px;text-align:center;">轉倉數量</th>
+                                           </tr>
+                                           {foreach from=$RDATA key=key item=item}
+                                           <tr>
+                                               <td style="text-align:center;">{$item.STORE_NAME}</td>
+                                               <td style="text-align:center;">{$item.PROD_NAME}</td>
+                                               <td style="text-align:right;">{$item.IN_STORE}</td>
+                                               <td style="text-align:right;">{$item.EXP_STORE}</td>
+                                           </tr>
+                                           {/foreach}
+                                    </table>
+                                    </div>
+	</div>
+</body>
+</html>
+

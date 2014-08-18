@@ -1,0 +1,214 @@
+<html>
+<head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+{literal}
+<!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+<script type="text/JavaScript">
+function countAMT(){
+         var TT=0;
+        $("input[name='cost[]']").each(function(){
+                        if (isNaN($(this).val()) || $(this).val()==""){
+                            TT=parseInt(TT)+0;
+                        }
+                        else{
+                            TT=parseInt(TT)+parseInt($(this).val());
+                        }
+        });
+        $("input[name='amt']").val(TT);
+}
+function ValidateNumber(e, pnumber){
+    	    //只能輸入數字
+    	    if (!/^\d+$/.test(pnumber)){
+    	       	alert("請輸入數字!!!");
+    	       	$(e).val("");
+    	       	   //if  (/^\d+/.exec($(e).val())==null){
+    	       	   //	   $(e).val("");
+    	       	   //}
+    	       	   //else{
+               	   //    $(e).val(/^\d+/.exec($(e).val()));
+               	   //}
+               	   
+         }
+         //if (parseInt($(e).val()) >100 || parseInt($(e).val()) ==0){
+         //	   	alert("請輸入1-100內的數字!!!");
+         //	   	$(e).val("");
+         //}
+         return false;
+}         
+</script>
+<script type="text/JavaScript"> 
+$(document).ready(function(){
+            
+            //table 樣式
+            $(".jtable th,.edit_table_h th,.rt-table th").each(function(){
+                 $(this).addClass("ui-state-default");
+            });
+                         
+            $(".jtable td,.edit_table_h td,.rt-table td").each(function(){
+                $(this).addClass("ui-widget-content");
+            });
+            
+            //游標在上面時變色
+            $(".jtable tr").hover(
+                function(){
+                 $(this).children("td").addClass("ui-state-hover");
+                },
+                function()
+                {
+                 $(this).children("td").removeClass("ui-state-hover");
+                }
+            );
+            
+            $(".jtable tr").click(function(){
+                $(this).children("td").toggleClass("ui-state-highlight");
+            });
+                        
+            //button
+				        $( "button,input:submit,div[name='menu']").button();
+				                    
+				        //autocomplete
+				        $( "input[name='pid[]']" ).autocomplete({
+		          	source: function( request, response ) {
+				                 $.ajax({
+				                 	url: "ajax.php",
+				                 	dataType: "json",
+				                 	data: {
+				                 	      	   cal: "GetProdName",
+				                 	      	  name: $("input[name='pid[]']").val()
+				                 	      },
+				                 	error: function(msg) {
+                          alert("fail!!"+msg);
+                      },
+				                 	success: function( data ) {
+				                 	         response( $.map( data, function( item ) {
+				                 		        	         return {
+				                 		        	         	label: item.LABEL ,
+				                 		        	         	value: item.VALUE
+				                 		        	         }
+				                 		        })); 
+				                 	}
+				                 });
+			          },
+			          minLength: 2,
+		          	//select: function( event, ui ) {
+		          	//	alert( ui.item ?
+		          	//		"Selected: " + ui.item.value + " aka " + ui.item.id :
+		          	//		"Nothing selected, input was " + this.value );
+		          	//},
+			          open: function() {
+			          	$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+			          },
+			          close: function() {
+			          	$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+			          }
+            
+		          });
+		          countAMT();          
+		          //收貨單金額計算
+		          $("input[name='cost[]']").change(function(){
+		             countAMT();  
+		          });
+				        $("input[name='cost[]'],input[name='qty[]']").keyup(function(){
+				          ValidateNumber($(this),$(this).val());
+				        });
+
+				        $("input[name='SDATE']").datepicker({dateFormat: 'yy-mm-dd'});
+				        $("input[name='EDATE']").datepicker({dateFormat: 'yy-mm-dd'});
+});
+</script>
+{/literal}
+<body>
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}
+           {if $smarty.cookies.wdcbcUNACCEPT!="" and $smarty.cookies.wdcbcUNACCEPT!=0}<font color="red">待轉倉/未接收:{$smarty.cookies.wdcbcUNACCEPT}</font>{/if}
+           </div>
+                     
+                     <tr><td valign="top" name="menu-td">
+                           <div>
+                     {include file="menu.htm"}
+                     	     </div>
+                     </td><td valign="top"><div style="width:700px;height:600px;text-align:center;">
+                     	
+                     
+                     {*主要畫面*}
+                     
+                                    
+                                    <form id="barcode" action="" method="post" ENCTYPE="multipart/form-data">
+                                    <div>
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                    {*表頭*}
+                                    <tr><th colspan="6"><div name="main_title">{$title}</div></th>
+                                    </tr>
+                                    <tr>
+                                      <th style="width:80px;"><div style="text-align:center;">{literal}庫別{/literal}</div></th>
+                                    		<td style="width:140px;"><div style="text-align:center;">{html_options name=sid options=$S_OPTION selected=$esid}</div></td>
+                                    		<th style="width:80px;"><div style="text-align:center;">{literal}產品類別{/literal}</div></th>
+                                    		<td style="width:140px;"><div style="text-align:center;">{html_options name=type options=$TYPE_OPTION selected=$etype}</div></td>
+                                      <th style="width:80px;"><div style="text-align:center;">{literal}品名{/literal}</div></th>
+                                    		<td style="width:180px;"><div style="text-align:center;"><input type="text" name="ename" style="width:100%" value="{$ename}"></div></td>
+                                    </tr>
+                                    <tr>
+                                      <th><div style="text-align:center;">{literal}廠商{/literal}</div></th>
+                                    		<td><div style="text-align:center;">{html_options name=vid options=$VEN_OPTION}</div></td>
+                                      <th><div style="width:;text-align:center;">{literal}區間{/literal}</div></th>
+                                    		<td colspan="3"><div style="width:;text-align:center;">
+                                    		<input type="text" name="SDATE" value="{$eSDATE}" style="width:90px;">~<input type="text" name="EDATE" value="{$eEDATE}" style="width:90px;"></div></td>
+                                    </tr>
+                                    <tr>
+                                    		<td colspan="6" style="text-align:right;">
+                                    		{*<input type="submit" name="gen_tran_sum" value="產生進出貨資料" style="font-size:12px;height:24px;" />|
+                                    		<input type="submit" name="gen_tran_dtl" value="產生進出貨明細" style="font-size:12px;height:24px;" />*}
+                                    		<input type="submit" name="gen_tran_dtl2" value="產生進貨明細" style="font-size:12px;height:24px;" />|
+                                    		<input type="submit" name="gen_tran_dtl3" value="產生出貨明細" style="font-size:12px;height:24px;" />|
+                                    		<input type="submit" name="gen_tran_dtl4" value="產生轉倉明細" style="font-size:12px;height:24px;" />|
+                                    		<input type="submit" name="gen_tran_dtl5" value="產生廠商退貨明細" style="font-size:12px;height:24px;" />|
+                                    		<input type="submit" name="gen_tran_dtl6" value="產生客戶退貨明細" style="font-size:12px;height:24px;" />
+                                    		{*|
+                                    		<input type="submit" id="submit" name="submit" value="查詢">*}
+                                    		</td>
+                                    	</tr>
+                                    </table>
+                                    </div>
+                                    </form>
+                                    <br>{*表身*}
+                                    {*<div>
+                                    <table class="jtable" style="font-size:12px;">
+                                           <tr>
+                                               <th style="width:60px;text-align:center;">庫別</th>
+                                               <th style="width:200px;text-align:center;">品名</th>
+                                               <th style="width:60px;text-align:center;">交易類別</th>
+                                               <th style="width:65px;text-align:center;">數量</th>
+                                               <th style="width:70px;text-align:center;">交易人員</th>
+                                               <th style="width:150px;text-align:center;">交易日期</th>
+                                           </tr>
+                                           {foreach from=$RDATA key=key item=item}
+                                           <tr>
+                                               <td style="text-align:center;">{$item.STORE_NAME}</td>
+                                               <td style="text-align:center;">{$item.PROD_NAME}</td>
+                                               <td style="text-align:center;">{$item.TRANS_NAME}</td>
+                                               <td style="text-align:right;">{$item.QTY}</td>
+                                               <td style="text-align:center;">{$item.EMP_NAME}</td>
+                                               <td style="text-align:center;">{$item.CTIME}</td>
+                                           </tr>
+                                           {/foreach}
+                                    </table>
+                                    </div>*}
+                                    
+                                    
+                                    
+                                    </div>
+                     </td></tr>
+           </table>
+
+</body>
+</html>
+

@@ -1,0 +1,84 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+
+{literal}
+<!--基本樣式-->
+<link type="text/css" href="css/basic.css" rel="stylesheet" />
+<!--jquery ui-->
+<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+		
+<script type="text/JavaScript"> 
+$(function() {    
+                        
+				                    $( "input:submit").button().css("font-size","12");
+				                    
+                        //輸入欄位
+                        $( "input:text,input:password").addClass("text ui-widget-content ui-corner-all");
+                        
+                    
+                        //$("div[name='div_login_form_label']").addClass("ui-state-default ui-widget-content  ui-corner-all");
+                        //$("[name='login_form_label']").addClass("ui-dialog-titlebar ui-widget-header ui-helper-clearfix");
+                        
+                        //if($("input[name='name']").val()==""){
+                        //        $("input[name='name']").focus();
+                        //}
+                        
+                        //1.員工基本資料
+                        //2.權限  倉別設定
+                        //3.轉倉流程修改:A->B  只需要由A倉出貨人員  做轉倉作業
+                        //  此時系統會產生1.由A倉轉出  2.轉入至B倉的動作
+                        //4.進貨時一併產生入帳資料(by進貨單)
+                        //5.客戶資料 及購買歷史記錄 即銷售對象
+                        //6.廠商欄位  FAX 手機 電話 業務名稱
+                        //7.進貨條碼編碼(一個產品都要不一樣)
+                        //   產品資訊 類別XXX+產品序號XXXXX+年(西洋年)月日+流水號
+                        //   強制規定名稱輸入格式
+                        //   所以進貨作業要分開
+                        //
+                        
+                        
+});
+</script>
+{/literal}
+
+<body>
+      <form action="" method="post" ENCTYPE="multipart/form-data">
+      <table>
+              <tr>
+                  <td colspan="2" style="text-align:center;height:10px;">
+                  <div name="main_header" style="font-size:18px;" class="ui-widget-header">{$title}</div></td>
+              </tr>
+              <tr valign="top">
+                  <td style="width:400px;height:300px;">
+                  
+                       <div class="ui-widget">
+                       	<table>
+                       			<tr>
+                       				<td style="width:200px;height:26px;"><div>{literal}帳號:{/literal}<input type="text" name="name" style="width:120px;"></div></td>
+                       				<td style="width:200px;height:26px;"><div>{literal}密碼:{/literal}<input type="password" name="pass" style="width:120px;"></div></td>
+                       		 </tr>
+                       		<tr>
+                       				<td colspan="4" align="left"><p>{$msg}</p></td>
+                       			</tr>
+                       			<tr>
+                       				<td colspan="4" align="right"><input type="submit" name="submit" value="登入"></td>
+                       			</tr>
+                       		
+                       	</table>
+                       </div>
+
+                  </td>
+              </tr>
+       </table>
+     
+      </form>
+      
+</body>
+</html>
+

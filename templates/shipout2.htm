@@ -1,0 +1,395 @@
+<html>
+<head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+{literal}
+<!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+<style>	 
+	 /*
+	 div#users-contain { width: 350px; margin: 20px 0; }
+		div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+		div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+		*/
+		div#users-contain table { margin: 1em 0; border-collapse: collapse;}
+		div#users-contain table td, div#users-contain table th { border: 1px solid #000000;}
+</style>		
+	 <!--jquery ui-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+<script type="text/JavaScript">
+function countAMT(){
+           var TT=0;
+           $("input[name='qty[]']").each(function(){
+               var qty=0;
+               var cost=$(this).parent("td").parent("tr").find("input[name='cost[]']").val();
+               if (isNaN($(this).val()) || $(this).val()==""||isNaN(cost) || cost==""){
+                    TT=parseInt(TT)+0;
+               }
+               else{
+                    TT=parseInt(TT)+parseInt(cost)*parseInt($(this).val())
+               }
+               
+           });
+           
+           $("input[name='amt']").val(TT);
+         
+}
+
+function ValidateNumber(e, pnumber){
+    	    //只能輸入數字
+    	    if (!/^\d+$/.test(pnumber)){
+    	       	//alert("請輸入數字!!!");
+    	       	$(e).val("");
+    	       	   //if  (/^\d+/.exec($(e).val())==null){
+    	       	   //	   $(e).val("");
+    	       	   //}
+    	       	   //else{
+               	   //    $(e).val(/^\d+/.exec($(e).val()));
+               	   //}
+               	   
+         }
+         //if (parseInt($(e).val()) >100 || parseInt($(e).val()) ==0){
+         //	   	alert("請輸入1-100內的數字!!!");
+         //	   	$(e).val("");
+         //}
+         return false;
+}
+
+function GetProdData(e,code,sid){
+           $.ajax({
+				     	          url: "ajax.php",
+				     	          type: "POST",
+				     	          dataType: "json",
+				     	          data: {
+				     	                	  cal: "GetProdName2",
+				     	                	  code: code,
+				     	                	  sid:  sid
+				     	                },
+				     	          error: function(msg) {
+                        alert("fail!!"+msg);
+                    },
+                    success:function(data){
+                      if (data.FLAG=="N"){
+                        e.parent("td").find("input[name='pname[]']").val("找不到該商品資訊或數量已用完");
+                      }
+                      else{
+                        //alert(data.NAME);
+                        //alert(e.parents("td").find("input[name='pname[]']").length);
+                        e.parent("td").find("input[name='pname[]']").val(data.NAME);
+                        e.parent("td").find("input[name='pid[]']").val(data.ID);
+                        e.parent("td").find("input[name='pline[]']").val(data.LINE);
+                        e.parent("td").parent("tr").find("input[name='cost[]']").val(data.COST);
+                        //e.parent("td").parent("tr").find("input[name='qty[]']").val(data.QTY);
+                        e.parent("td").parent("tr").find("input[name='qty[]']").val(1);
+                        countAMT();                         
+                      }
+                      //alert(typeof(data));
+
+                    }
+				       });
+				       
+				       
+}
+</script>		
+<script type="text/JavaScript"> 
+$(document).ready(function(){
+                        $(".jtable,.edit_table_h").each(function(){
+                                     $(this).addClass("ui-widget ui-widget-content");
+                        });
+                        $(".jtable th,.edit_table_h th").each(function(){
+                        
+                             $(this).addClass("ui-widget ui-widget-content ui-state-default");
+                        
+                        });
+                          
+                        $(".jtable td,.edit_table_h td").each(function(){
+                        
+                            $(this).addClass("ui-widget-content");
+                        
+                        });
+                        
+                        //游標在上面時變色
+                        $(".jtable tr").hover(
+                            function(){
+                             $(this).children("td").addClass("ui-state-hover");
+                            },
+                            function()
+                            {
+                             $(this).children("td").removeClass("ui-state-hover");
+                            }
+                        );
+                        
+                        $(".jtable tr").click(function(){
+                           $(this).children("td").toggleClass("ui-state-highlight");
+                        });
+                        
+                        //button
+				                    $( "button,input:submit,div[name='menu']").button();
+				                    
+				                    $("#RDATE").datepicker();
+                        //$("#RDATE").attachDatepicker({dateFormat: 'yy-mm-dd'});
+                        //$("#barcode").submit(function(){
+                        //                alert($("input[name='CODE']").val());
+                        //});
+                    
+                        countAMT();          
+		                      //收貨單金額計算
+		                      $("input[name='qty[]']").change(function(){
+		                         countAMT();  
+		                      });
+		                      
+				                    //$("input[name='cost[]'],input[name='qty[]']").keyup(function(){
+				                    //  ValidateNumber($(this),$(this).val());
+				                    //});
+				        
+				                    //刷barcode
+				                    $("input[name='pcode[]']").keypress(function (e) {
+				                       
+				                       if (e.which == 13){
+				                            var code=$(this).val();
+				                            var sid="{/literal}{$smarty.cookies.wdcbcSTOREID}{literal}";
+				                            //先檢查是否已刷過
+				                            var pcount=0;
+				                            $("input[name='pcode[]']").each(function(){
+				                               if (code==$(this).val()){
+				                                       pcount++;
+				                               }
+				                            });
+				                            if (pcount>1){
+				                                alert("已有相同條碼!!!");
+				                                $(this).val("");
+				                                return false;
+				                            }
+				                            //var cidx=$("*").index($(this)[0]);
+				                            //$(this).css("display","none").parents("td").find("input[name='pname[]']").val("已按下enter").show();
+				                            //alert($(this).parents("td").html());
+				                            GetProdData($(this),code,sid);
+				                            
+				                            var index =$("#users-contain tbody input[name='pcode[]']").index(this);
+				                            if ($("#users-contain tbody input[name='pcode[]']").eq(parseInt(index)+1).length==1){
+				                                $("#users-contain tbody input[name='pcode[]']").eq(parseInt(index)+1).focus();
+				                            }
+				                            
+				                            return false;
+				                       }
+                           
+				                    });
+                        $("form#shipout").submit(function(){
+                                        
+                                        //售價
+                                        if ($("input[name='amt']").val()==0){
+                                            alert("未輸入售價!!!");
+                                            return false;
+                                        }
+                                        
+                                        //是否有輸入資料
+                                        var pid_flag="N";
+                                        $("input[name='pid[]']").each(function(){
+                                                        if ($(this).val()!=""){
+                                                            pid_flag="Y";
+                                                        }
+                                        });
+                                        if (pid_flag=="N"){
+                                            alert("請至少輸入一項商品!!!");
+                                            return false;
+                                        }
+                                        
+                                        
+                        });
+});
+</script>
+{/literal}
+<body>
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}
+           {if $smarty.cookies.wdcbcUNACCEPT!="" and $smarty.cookies.wdcbcUNACCEPT!=0}<font color="red">待轉倉/未接收:{$smarty.cookies.wdcbcUNACCEPT}</font>{/if}
+           </div>
+                     
+                     <tr valign="top"><td name="menu-td">
+                           <div>
+                     {include file="menu.htm"}
+                     	     </div>
+                     </td><td><div style="width:700px;height:600px;text-align:center;">
+                     	
+                     
+                     {*主要畫面*}
+                     
+                                    <form id="shipout" action="" method="post" ENCTYPE="multipart/form-data">
+                                    <div>
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                    {*表頭*}
+                                    <tr>
+                                 		<th colspan="6"><div name="main_title">{$title}</div></th>
+                                 		</tr>
+                                    <tr>
+                                    		<th style="width:100px;"><div style="text-align:center;">{literal}退貨人員{/literal}</div></th>
+                                    		<td style="width:100px;"><div style="text-align:center;">{$hdata.EMP_NAME}</div></td>
+                                    		<th style="width:100px;"><div style="text-align:center;">{literal}庫別{/literal}</div></th>
+                                    		<td style="width:100px;"><div style="text-align:center;">{$hdata.STORE_NAME}</div></td>
+                                    		<th style="width:100px;"><div style="text-align:center;">{literal}退貨日期{/literal}</div></th>
+                                    		<td style="width:100px;"><div style="text-align:center;">{$hdata.CDATE}</div></td>
+                                    </tr>
+                                    <tr>
+                                    		<th><div style="text-align:center;">{literal}調整金額{/literal}</div></th>
+                                    		<td><div style="text-align:center;"><input type="text" name="amt" style="text-align:right;width:100%;" value=0  /></div></td>
+                                    		<th><div style="text-align:center;">{literal}備註{/literal}</div></th>
+                                    		<td colspan="3"><div style="text-align:center;"><input type="text" name="remark" style="width:100%;" /></div></td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="6" style="text-align:right;">
+                                    		<input type="submit" id="submit" name="submit" value="新增">
+                                    		</td>
+                                    	</tr>
+                                    </table>
+                                    </div>
+                                    
+                                    
+                                    <hr>{*表身*}
+                                    <div id="users-contain" class="ui-widget">
+                                    <table class="jtable" style="font-size:12px;">
+                                           <thead>
+                                           <tr>
+                                               <th style="width:40px;text-align:center;">項次</th>
+                                               <th style="width:400px;text-align:center;">品名</th>
+                                               <th style="width:80px;text-align:center;">數量</th>
+                                               <th style="width:80px;text-align:center;">成本(單件)</th>
+                                           </tr>
+                                           </thead>
+                                           <tbody>
+                                           <tr>
+                                               <td>1.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>2.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>3.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>4.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>5.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>6.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>7.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>8.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>9.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>10.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>11.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>12.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>13.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>14.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <td>15.</td>
+                                               <td><input type="hidden" name="pid[]"><input type="hidden" name="pline[]">
+                                                   <input type="text" name="pcode[]" style="width:100%;"><br/>
+                                                   <input type="text" name="pname[]" readonly="ture" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="ture" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           </tbody>
+                                    </table>
+                                    </div>
+                                    
+                                    </form>
+                                    
+                                    </div>
+                     </td></tr>
+           </table>
+
+</body>
+</html>
+

@@ -1,0 +1,319 @@
+FONT		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+TD		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+BODY		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+P		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+DIV		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+INPUT		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+TEXTAREA	{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+FORM 		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+SELECT		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+.title {
+	font-size: 16px;
+	color: #000099;
+	font-weight: bolder;
+}
+.DCtitle {
+	font-size: 20px;
+	color: #000000;
+	font-weight: bolder;
+}
+.mtitle {
+	font-size: 16px;
+	color: #000099;
+	font-weight: bolder;
+}
+.blue01 {
+	font-size: 12px;
+	color: #000066;
+}
+.linkorg {
+	font-size: 12px;
+	color: #FF6600;
+}
+.black01 {
+	font-size: 12px;
+	line-height: 16px;
+	color: #333333;
+}
+.blue {
+	font-size: 12px;
+	color: #0066FF;
+}
+.white {
+	font-size: 12px;
+	color: #FFFFFF;
+}
+.whiteb {
+	font-size: 12px;
+	color: #FFFFFF;
+	font-weight: bolder;
+}
+.blueb {
+	font-size: 12px;
+	color: #000066;
+	font-weight: bolder;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.bluel {
+	font-size: 11px;
+	color: #000066;
+	font-family: Arial, Helvetica, sans-serif;
+}
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-image: url(index/bg.gif);
+}
+.linktitle {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #006699;
+	text-decoration: none;
+	background-image: url(index/linkblue.jpg);
+	padding-top: 5px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	line-height: 28px;
+}
+
+.linktitle:hover {			
+	background-image:url("index/linkgreen.jpg");		
+	background-repeat:repeat;		
+}
+.linktitle2 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #336600;
+	text-decoration: none;
+	padding-top: 0px;
+	padding-right: 5px;
+	padding-bottom: 0px;
+	padding-left: 5px;	
+}
+
+.linktitle2:hover {
+	background-color: #66FF00;
+}
+
+
+.linkblack {
+  text-decoration: none;
+	color: #000000;
+	font-size: 12px;		
+}
+.linkblack:hover {
+	color: #FF0000;
+}
+.titlered01 {
+	font-size: 12px;
+	color: #FF0000;
+	text-decoration: none;
+	font-weight: normal;
+}
+.linkred {
+	font-size: 12px;
+	color: #FF0000;
+	font-weight: normal;
+}
+.linkblack0 {
+	font-size: 12px;
+	color: #000000;
+	font-weight: normal;
+	text-decoration: underline;
+}
+.linkwhiteb {
+	font-size: 12px;
+	color: #FFFFFF;
+	font-weight: bolder;
+}
+
+
+#fixleftmenu{
+position:fixed !important;
+position:absolute;
+top:50px;
+
+top: expression( ( 50 + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+
+margin:0 0 0 0px;
+width:140px;height:300px;
+}
+
+
+.csstable { 
+  border: 1px;
+  border-color: #000;
+	border-width: 1px;
+	border-spacing: 3px;
+	border-style: ridge;	
+	border-collapse: collapse;
+	font-size: 8pt;
+	background-color: white;
+}
+.csstable th {
+  text-align: left;
+	border-width: 1px;
+	padding: 3px;
+	border-style: ridge;
+	border-color: #000;
+	background-color: #cccccc;	
+	FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px; font-weight: normal;
+	
+}
+.csstable td {
+	border-width: 1px;
+	padding: 3px;
+	border-style: ridge;
+	border-color: #000;
+	background-color: white;
+	font-size: 8pt;	
+}
+.csstable tr.odd td{
+	border-width: 1px;
+	padding: 3px;
+	border-style: ridge;
+	border-color: #000;
+	background-color: #eee;
+	font-size: 8pt;
+	
+}
+.csstable tr.redbg td{
+	border-width: 1px;
+	padding: 3px;
+	border-style: ridge;
+	border-color: #000;
+	background-color: #FFD7D7;
+	font-size: 8pt;
+	
+}
+.csstable tr.ylwbg td{
+	border-width: 1px;
+	padding: 3px;
+	border-style: ridge;
+	border-color: #000;
+	background-color: #fffacd;
+	font-size: 8pt;
+	
+}
+
+.csstable tr.grybg1 td{
+	border-width: 1px;
+	padding: 3px;
+	border-style: ridge;
+	border-color: #000;
+	background-color: #eeeeee;
+	font-size: 8pt;
+	
+}
+.csstable tr.grybg2 td{
+	border-width: 1px;
+	padding: 3px;
+	border-style: ridge;
+	border-color: #000;
+	background-color: #ffffff;
+	font-size: 8pt;
+	
+}
+.csstable tr.grybg3 td{
+	border-width: 1px;
+	padding: 3px;
+	border-style: ridge;
+	border-color: #000;
+	color:red;
+	background-color: #EEEEEE;
+	font-size: 8pt;
+	
+}
+/* JAVASCRIPT sort tables */
+table.tablesorter {
+	font-family:arial;
+	background-color: #000000;
+	margin:10px 0pt 15px;
+	font-size: 8pt;
+	width: 100%;
+	text-align: left;
+}
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+	background-color: #D0D0D0;
+	border: 1px solid #FFF;
+	font-size: 8pt;
+	padding: 4px;
+}
+table.tablesorter thead tr .header {
+	background-image: url(sort_bg.gif);
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+table.tablesorter tbody td {
+	color: #000000;
+	padding: 4px;
+	background-color: #FFF;
+	vertical-align: top;
+}
+table.tablesorter tbody tr.odd td {
+	background-color:#E0E0E0;
+}
+table.tablesorter tbody tr.redbg td {
+	background-color:#FFD7D7;
+}
+table.tablesorter tbody tr.whitebg td {
+	background-color:#FFFFFF;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(sort_asc.gif);
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(sort_desc.gif);
+}
+table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
+background-color: #8dbdd8;
+}
+
+/* JAVASCRIPT sort tables */
+table.tablesorternobg {
+	font-family:arial;
+	background-color: #000000;
+	margin:10px 0pt 15px;
+	font-size: 8pt;
+	width: 100%;
+	text-align: left;
+}
+table.tablesorternobg thead tr th, table.tablesorter tfoot tr th {
+	background-color: #D0D0D0;
+	border: 1px solid #FFF;
+	font-size: 8pt;
+	padding: 2px;	
+}
+table.tablesorternobg thead tr .header {
+	background-image: url(sort_bg.gif);
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+table.tablesorternobg tbody td {
+	color: #000000;
+	padding: 2px;	
+	vertical-align: top;
+}
+table.tablesorternobg tbody tr.odd td {
+	background-color:#E0E0E0;
+}
+table.tablesorternobg tbody tr.redbg td {
+	background-color:#FFD7D7;
+}
+table.tablesorternobg tbody tr.whitebg td {
+	background-color:#FFFFFF;
+}
+table.tablesorternobg thead tr .headerSortUp {
+	background-image: url(sort_asc.gif);
+}
+table.tablesorternobg thead tr .headerSortDown {
+	background-image: url(sort_desc.gif);
+}
+table.tablesorternobg thead tr .headerSortDown, table.tablesorternobg thead tr .headerSortUp {
+background-color: #8dbdd8;
+}

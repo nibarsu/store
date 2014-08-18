@@ -1,0 +1,320 @@
+<html>
+<head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+{literal}
+<!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--javascript tool-->
+  <script type="text/javascript" src="includes/tools.js"></script>
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+<script type="text/JavaScript">
+//乘法
+function multiplication(num1,num2)
+{
+     var m=0,s1=num1.toString(),s2=num2.toString();
+     try{m+=s1.split(".")[1].length}catch(e){}
+     try{m+=s2.split(".")[1].length}catch(e){}
+     return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
+}
+
+function countAMT(){
+         var TT=0;
+        $("input[name='cost[]']").each(function(){
+                        if (isNaN($(this).val()) || $(this).val()==""){
+                            TT=parseInt(TT)+0;
+                        }
+                        else{
+                            TT=parseInt(TT)+parseInt($(this).val());
+                        }
+        });
+        $("input[name='amt']").val(TT);
+}
+function ValidateNumber(e, pnumber){
+    	    //只能輸入數字
+    	    if (!/^\d+$/.test(pnumber)){
+    	       	alert("請輸入數字!!!");
+    	       	$(e).val("");
+         }
+         return false;
+}
+
+function GetPHisVal(pid,vid,idx){
+           //會尋找最近一次同廠商的進貨價格
+           //廠商編號
+           //商品名稱
+           //alert(pid+","+vid+","+idx);
+           $.ajax({
+				        	        url: "ajax.php",
+				        	        dataType: "json",
+				        	        data: {
+				        	                 cal: "GetPHisVal",
+				        	              	   pid: pid,
+				        	              	   vid: vid
+				        	              	   
+				        	              },
+				        	        success: function( data ) {
+                               //viewobj(data);
+                               //alert(pid+","+vid+","+idx);
+                               $("input[name='mess[]']").eq(idx).val(data["MESS"]);
+				        	        }
+				        });
+}
+
+</script>
+<script type="text/JavaScript"> 
+$(document).ready(function(){
+            
+            //table 樣式
+            $(".jtable th,.edit_table_h th,.rt-table th").each(function(){
+                 $(this).addClass("ui-state-default");
+            });
+                         
+            $(".jtable td,.edit_table_h td,.rt-table td").each(function(){
+                $(this).addClass("ui-widget-content");
+            });
+            
+            //游標在上面時變色
+            $(".jtable tr").hover(
+                function(){
+                 $(this).children("td").addClass("ui-state-hover");
+                },
+                function()
+                {
+                 $(this).children("td").removeClass("ui-state-hover");
+                }
+            );
+            
+            $(".jtable tr").click(function(){
+                $(this).children("td").toggleClass("ui-state-highlight");
+            });
+                        
+            //button
+				        $( "button,input:submit,div[name='menu']").button();
+				                    
+				        //autocomplete
+				        $( "input[name='pid[]']" ).each(function(){
+				            var $inputline=$(this);      
+				            var idx=$( "input[name='pid[]']" ).index(this);
+				            $inputline.autocomplete({
+		          	              source: function( request, response ) {
+				                            $.ajax({
+				                            	url: "ajax.php",
+				                            	dataType: "json",
+				                            	data: {
+				                            	      	   cal: "GetProdName",
+				                            	      	  name: $inputline.val(),
+				                            	      	  type: $( "select[name='pt[]']" ).eq(idx).val()
+				                            	      },
+				                            	error: function(msg) {
+                                     alert("fail!!"+msg);
+                                 },
+				                            	success: function( data ) {
+				                            	         response( $.map( data, function( item ) {
+				                            		        	         return {
+				                            		        	         	label: item.LABEL ,
+				                            		        	         	value: item.VALUE
+				                            		        	         }
+				                            		        })); 
+				                            	}
+				                            });
+			                        },
+			                        minLength: 4,
+		          	              open: function() {
+			          	                   $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+			                        },
+			                        close: function() {
+			                        	$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+			                        }
+			                        
+            
+		              });   
+				        });
+				        //最近一次進貨價
+				        $( "input[name='pid[]']" ).each(function(){
+				            $(this).change(function(){
+				                    idx=$("input[name='pid[]']").index(this);
+				                    //alert($("input[name='pid[]']").eq(idx).val());
+				                    GetPHisVal($(this).val(),$("select[name='vid']").val(),idx);
+				            });
+				        });    
+		          countAMT();          
+		          
+		          $("input[name='ncost[]']").change(function(){
+		             //免稅金額輸入時  乘上1.015  填入cost
+		             //修正為1.05
+		             var nontax=parseInt($(this).val());
+		             var rate=1;
+		             if ($("select[name='tflag']").val()=="T"){
+		                 rate=1.05;
+		             }
+		             var tax=multiplication(nontax,rate);
+		             $(this).parent("td").parent("tr").find("input[name='cost[]']").val(Math.round(tax));
+		             countAMT();
+		             
+		             
+		          });
+		          
+		          $("select[name='tflag']").change(function(){
+		                          if ($(this).val()=="T"){
+		                          $("input[name='cost[]']").each(function(){
+                              $(this).css("display","block");
+		                          });
+		                          }
+		                          else{
+		                          $("input[name='cost[]']").each(function(){
+                              $(this).css("display","none");
+		                          });     
+                            }
+                            
+                            $("input[name='ncost[]']").each(function(){
+                              //免稅金額輸入時  乘上1.015  填入cost
+		                            //修正為1.05
+		                            var nontax=parseInt($(this).val());
+		                            var rate=1;
+		                            if ($("select[name='tflag']").val()=="T"){
+		                                rate=1.05;
+		                            }
+		                            var tax=multiplication(nontax,rate);
+		                            $(this).parent("td").parent("tr").find("input[name='cost[]']").val(Math.round(tax));
+                            });
+                            countAMT();
+		          });
+		          
+		          
+		          
+				        $("input[name='ctime']").datepicker({dateFormat: 'yy-mm-dd'});
+				        
+            $("#receive").submit(function(){
+                         //是否有輸入資料
+                         var pid_flag="N";
+                         $("input[name='pid[]']").each(function(){
+                            if ($(this).val()!=""){
+                                pid_flag="Y";
+                            }
+                         });
+                         if (pid_flag=="N"){
+                             alert("請至少輸入一項商品!!!");
+                             return false;
+                         }
+                         
+                         //是否有輸入成本
+                         var cost_flag="Y";
+                         $("input[name='pid[]']").each(function(){
+                            if ($(this).val()!=""){
+                                    //alert($(this).parent("td").parent("tr").html());
+                                if ($(this).parent("td").parent("tr").find("input[name='cost[]']").val()==0){
+                                     cost_flag="N";
+                                }
+                            }
+                         });
+                         if (cost_flag=="N"){
+                             alert("請輸入成本!!!");
+                             return false;
+                         }
+            });
+                    
+});
+</script>
+{/literal}
+<body>
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}
+           {if $smarty.cookies.wdcbcUNACCEPT!="" and $smarty.cookies.wdcbcUNACCEPT!=0}<font color="red">待轉倉/未接收:{$smarty.cookies.wdcbcUNACCEPT}</font>{/if}
+           </div>
+                     
+                     <tr><td valign="top" name="menu-td">
+                           <div>
+                     {include file="menu.htm"}
+                     	     </div>
+                     </td><td valign="top"><div style="width:700px;height:600px;text-align:center;">
+                     	
+                     
+                     {*主要畫面*}
+                     
+                                    
+                                    <form id="receive" action="" method="post" ENCTYPE="multipart/form-data">
+                                    <div>
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                    {*表頭*}
+                                    <tr><th colspan="6"><div name="main_title" style="line-height:20px;">{$title}</div></th></tr>
+                                    <tr>
+                                    		<th style="width:100px;"><div style="text-align:center;">{literal}收貨人員{/literal}</div></th>
+                                    		<td style="width:120px;"><div style="text-align:center;">{$hdata.EMP_NAME}</div></td>
+                                    		<th style="width:100px;"><div style="text-align:center;">{literal}庫別{/literal}</div></th>
+                                    		<td style="width:120px;"><div style="text-align:center;">{html_options name=sid options=$S_OPTION selected=$hdata.STORE_ID}</div></td>
+                                    		<th style="width:100px;"><div style="text-align:center;">{literal}收貨日期{/literal}</div></th>
+                                    		<td style="width:100px;"><div style="text-align:center;"><input type="text" name="ctime" style="width:80px;" value="{$hdata.CDATE}"></div></td>
+                                    </tr>
+                                    <tr>
+                                    		<th><div style="text-align:center;">{literal}廠商{/literal}</div></th>
+                                    		<td><div style="text-align:center;">{html_options name=vid options=$VEN_OPTION}</div></td>
+                                    		<th><div style="text-align:center;">{literal}應稅/未稅{/literal}</div></th>
+                                    		<td><div style="text-align:center;">
+                                    		    <select name="tflag">
+                                    		    <option value="T">應稅</option>
+                                    		    <option value="F">未稅</option>
+                                    		    </select></div></td>
+                                    		<th><div style="text-align:center;">{literal}金額{/literal}</div></th>
+                                    		<td><div style="text-align:center;"><input type="text" name="amt" readonly="ture" style="text-align:right;"></div></td>
+                                    </tr>
+                                    <tr>
+                                      <th><div style="text-align:center;">{literal}已付/未付{/literal}</div></th>
+                                    		<td><div style="text-align:center;">
+                                    		    <select name="pflag">
+                                    		    <option value="1">未付</option>
+                                    		    <option value="2">已付</option>
+                                    		    </select></div></td>
+                                    		<th style="text-align:center;">{literal}備註{/literal}</th>
+                                    		<td colspan="2" style="text-align:center;">
+                                    		    <input type="text" name="remark" style="width:100%;"></td>
+                                    		<td style="text-align:right;">
+                                    		<input type="submit" id="submit" name="submit" value="新增">
+                                    		</td>
+                                    	</tr>
+                                    </table>
+                                    </div>
+                                    <hr>{*表身*}
+                                    <div>
+                                    <table class="jtable" style="font-size:12px;">
+                                           <tr>
+                                               <th style="width:100px;text-align:center;">類別</th>
+                                               <th style="width:240px;text-align:center;">品名</th>
+                                               <th style="width:60px;text-align:center;">數量</th>
+                                               <th style="width:100px;text-align:center;">金額</th>
+                                               <th style="width:100px;text-align:center;">應稅金額</th>
+                                               <th style="width:100px;text-align:center;">單項成本</th>
+                                           </tr>
+                                           {section name="recLoop" start=0 loop=30}
+                                           <tr>
+                                               <td style="text-align:center;">{html_options name=pt[] options=$TYPE_OPTION}</td>
+                                               <td><input type="text" name="pid[]" style="width:100%;"></td>
+                                               <td><input type="text" name="qty[]" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="ncost[]" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="cost[]" readonly="true" style="width:100%;text-align:right;" value=0></td>
+                                               <td><input type="text" name="dcost[]" style="width:100%;text-align:right;" value=0></td>
+                                           </tr>
+                                           <tr>
+                                               <th>*相關資訊*</th>
+                                               <td colspan="5"><input type="text" name="mess[]" readonly="true" style="width:100%;color:red;"></td>
+                                           </tr>
+                                           {/section}
+                                           
+                                    </table>
+                                    </div>
+                                    
+                                    </form>
+                                    
+                                    </div>
+                     </td></tr>
+           </table>
+
+</body>
+</html>
+

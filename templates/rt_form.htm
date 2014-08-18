@@ -1,0 +1,145 @@
+<html>
+<head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+{literal}
+<!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+<script type="text/JavaScript">
+</script>
+<script type="text/JavaScript"> 
+$(document).ready(function(){
+            
+            //table 樣式
+            $(".jtable th,.edit_table_h th,.rt-table th").each(function(){
+                 $(this).addClass("ui-state-default");
+            });
+                         
+            $(".jtable td,.edit_table_h td,.rt-table td").each(function(){
+                $(this).addClass("ui-widget-content");
+            });
+            
+            //游標在上面時變色
+            $(".jtable tr").hover(
+                function(){
+                 $(this).children("td").addClass("ui-state-hover");
+                },
+                function()
+                {
+                 $(this).children("td").removeClass("ui-state-hover");
+                }
+            );
+            
+            $(".jtable tr").click(function(){
+                $(this).children("td").toggleClass("ui-state-highlight");
+            });
+                        
+            //button
+				        $( "button,input:submit,div[name='menu']").button();
+				        
+				        
+            
+                    
+});
+</script>
+{/literal}
+<body>
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}</div>
+                     
+                     <tr><td><div style="width:700px;height:600px;text-align:center;">
+                     	
+                     
+                     {*主要畫面*}
+                     
+                                    
+                                    <div>
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                    {*表頭*}
+                                    <tr><th colspan="6"><div name="main_title">{$title}</div></th></tr>
+                                    <tr>
+                                    		<th><div style="width:80px;text-align:center;">{literal}收貨人員{/literal}</div></th>
+                                    		<td><div style="width:80px;text-align:center;">{$hdata.REC_EMP_NAME}</div></td>
+                                    		<th><div style="width:80px;text-align:center;">{literal}庫別{/literal}</div></th>
+                                    		<td><div style="width:80px;text-align:center;">{$hdata.STORE_NAME}</div></td>
+                                    		<th><div style="width:80px;text-align:center;">{literal}收貨日期{/literal}</div></th>
+                                    		<td><div style="width:100px;text-align:center;">{$hdata.CTIME|date_format:"%Y-%m-%d"}</div></td>
+                                    </tr>
+                                    <tr>
+                                    		<th><div style="text-align:center;">{literal}廠商{/literal}</div></th>
+                                    		<td><div style="text-align:center;">{$hdata.VEN_NAME}</div></td>
+                                    		<th><div style="text-align:center;">{literal}已付/未付{/literal}</div></th>
+                                    		<td><div style="text-align:center;">{if $hdata.PFLAG=="Y"}已付{else}未付{/if}</div></td>
+                                    		<th><div style="text-align:center;">{literal}金額{/literal}</div></th>
+                                    		<td><div style="text-align:center;">{$hdata.AMT}</div></td>
+                                    </tr>
+                                    {if $hdata.PFLAG=="Y"}
+                                    <tr>
+                                    		<th><div style="text-align:center;">{literal}付款標記人員{/literal}</div></th>
+                                    		<td><div style="text-align:center;">{$hdata.PAY_EMP_NAME}</div></td>
+                                    		<th><div style="text-align:center;">{literal}付款標記日期{/literal}</div></th>
+                                    		<td><div style="text-align:center;">{$hdata.PTIME}</div></td>
+                                    		<th><div style="text-align:center;">{literal}&nbsp;{/literal}</div></th>
+                                    		<td><div style="text-align:center;">&nbsp;</div></td>
+                                    </tr>
+                                    {/if}
+                                    </table>
+                                    </div>
+                                    <br>
+                                    {*表身*}
+                                    <div>
+                                    <table class="jtable" style="font-size:12px;">
+                                           <tr>
+                                               <th style="width:40px;text-align:center;">項次</th>    
+                                               <th style="width:80px;text-align:center;">類別</th>
+                                               <th style="width:200px;text-align:center;">品名</th>
+                                               <th style="width:80px;text-align:center;">數量</th>
+                                               <th style="width:100px;text-align:center;">金額</th>
+                                           </tr>
+                                           {foreach from=$ddata item=item key=key}
+                                           <tr>
+                                               <td style="text-align:center;">{$item.LINE}</td>
+                                               <td style="text-align:center;">{$item.PROD_TYPE}</td>
+                                               <td style="text-align:center;">{$item.PROD_NAME}</td>
+                                               <td style="text-align:right;">{$item.QTY}</td>
+                                               <td style="text-align:right;">{$item.SUBAMT}</td>
+                                           </tr>
+                                           {/foreach}
+                                    </table>
+                                    </div>
+                                    <br>
+                                    {if $rdata|@count >0}
+                                    <div>
+                                    <table class="jtable" style="font-size:12px;">
+                                           <tr>
+                                               <th colspan="2" style="text-align:center;">退貨資訊</th>    
+                                           </tr>
+                                           <tr>
+                                               <th style="width:80px;text-align:center;">退貨單號</th>    
+                                               <th style="width:100px;text-align:center;">金額</th>
+                                           </tr>
+                                           {foreach from=$rdata item=item key=key}
+                                           <tr>
+                                               <td style="text-align:center;"><a href="so_form?id={$item.ID}" target="_BLANK">{$item.ID}</a></td>
+                                               <td style="text-align:right;">{$item.AMT}</td>
+                                           </tr>
+                                           {/foreach}
+                                    </table>
+                                    </div>
+                                    {/if}
+
+                                    
+                                    </div>
+                     </td></tr>
+           </table>
+
+</body>
+</html>
+

@@ -1,0 +1,49 @@
+{literal}
+<!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+		
+<script type="text/JavaScript"> 
+$(document).ready(function(){
+                    $(".jtable th,.edit_table_h th").each(function(){
+ 
+                             $(this).addClass("ui-state-default");
+ 
+                        });
+                         
+                        $(".jtable td,.edit_table_h td").each(function(){
+ 
+                           $(this).addClass("ui-widget-content");
+ 
+                       });
+                        //游標在上面時變色
+                        $(".jtable tr").hover(
+                            function(){
+                             $(this).children("td").addClass("ui-state-hover");
+                            },
+                            function()
+                            {
+                             $(this).children("td").removeClass("ui-state-hover");
+                            }
+                        );
+                        $(".jtable tr").click(function(){
+                           $(this).children("td").toggleClass("ui-state-highlight");
+                       });
+                        
+                        //button
+				                    $( "button,input:submit,div[name='menu']").button();
+				                    
+				                $("#RDATE").datepicker();
+                    //$("#RDATE").attachDatepicker({dateFormat: 'yy-mm-dd'});
+                    $("#barcode").submit(function(){
+                                    alert($("input[name='CODE']").val());
+                    });
+});
+</script>
+{/literal}
+
+

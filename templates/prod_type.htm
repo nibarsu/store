@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+{literal}
+   <!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+	
+		<script type="text/javascript">
+			$(function(){
+			                      $(".jtable th,.edit_table_h th").each(function(){
+ 
+                             $(this).addClass("ui-state-default");
+ 
+                        });
+                         
+                        $(".jtable td,.edit_table_h td").each(function(){
+ 
+                           $(this).addClass("ui-widget-content");
+ 
+                       });
+                        //游標在上面時變色
+                        $(".jtable tr").hover(
+                            function(){
+                             $(this).children("td").addClass("ui-state-hover");
+                            },
+                            function()
+                            {
+                             $(this).children("td").removeClass("ui-state-hover");
+                            }
+                        );
+                        $(".jtable tr").click(function(){
+                           $(this).children("td").toggleClass("ui-state-highlight");
+                       });
+
+				
+
+				// Datepicker
+				$('#datepicker').datepicker({
+					inline: true
+				});
+				
+				//button
+				$( "button,input:submit,div[name='menu']").button();
+
+				 //試作頁面切換
+				 
+				
+			});
+		</script>
+		
+			
+		{/literal}
+<body>
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}
+           {if $smarty.cookies.wdcbcUNACCEPT!="" and $smarty.cookies.wdcbcUNACCEPT!=0}<font color="red">待轉倉/未接收:{$smarty.cookies.wdcbcUNACCEPT}</font>{/if}
+           </div>
+                     
+                     <tr valign="top"><td name="menu-td">
+                           <div>
+                     {include file="menu.htm"}
+                     	     </div>
+                     </td><td><div style="width:700px;height:600px;text-align:center;">
+                     	
+                     
+                     {*主要畫面*}
+                                    <form action="" method="post" ENCTYPE="multipart/form-data">
+                                    <table class="edit_table_h" style="font-size:12px;">
+                                      <tr>
+                                    		<th colspan="2"><div name="main_title">{$title}</div></th>
+                                    		</tr>
+                                    	 <tr>
+                                    		<th style="width:100;text-align:center;">{literal}商品類別{/literal}</th>
+                                    		<td style="width:600;text-align:center;"><input type="text" class="normal-input-text" name="name" value="{$edata.NAME}" ></td>
+                                    		</tr>
+                                    		<tr>
+                                    		<th style="width:100;text-align:center;">{literal}開啟/關閉{/literal}</th>
+                                    		<td style="width:600;text-align:center;">
+                                    		   <select name="enable">
+                                    		           <option value="Y" {if $edata.ENABLE=="Y"}selected=selected{/if}>開啟</option>
+                                                   <option value="N" {if $edata.ENABLE=="N"}selected=selected{/if}>關閉</option>
+                                           </select>
+                                    		</td>
+                                    		</tr>
+                                    		
+                                    	<tr>
+                                    		      <td colspan="2" style="text-align:right;">
+                                    		               <input type="hidden" name="id" value="{$edata.ID}">
+                                    		               {if $edit==1}
+                                    		               <input type="submit" id="submit" name="submit" value="編輯">
+                                    		               {else}
+                                    		               <input type="submit" id="submit" name="submit" value="新增">
+                                    		               {/if}
+                                    		     </td>
+                                    	</tr>
+                                    </table>
+                                    </form>
+                                    
+                                    <div>
+                                    {*顧客清單*}
+                                    <table class="jtable" style="width:700px;font-size:12px;">
+                                               <tr>
+                                                   <th><div style="text-align:center;width:40px;">{literal}項次{/literal}</div></th>
+                                                   <th><div style="text-align:center;width:600px;">{literal}商品類別{/literal}</div></th>
+                                                   <th><div style="text-align:center;width:50px;">{literal}啟用{/literal}</div></th>
+                                               </tr>
+                                               {foreach name=cc from =$cdata item=item key=key}
+                                               <tr><td><div style="text-align:center;">{$smarty.foreach.cc.iteration}</div></td>
+                                                     <td><div style="text-align:center;"><a href="prod_type?edit=1&id={$item.ID}" >{$item.NAME}</a></td>
+                                                     <td><div style="text-align:center;">{$item.ENABLE}</td>
+                                               </tr>
+                                               {/foreach}
+                                    <table>
+                                    </div>
+                                    </div>
+                     
+                     
+                     
+                     
+                     	
+                     </td></tr>
+           </table>
+
+</body>
+</html>
+

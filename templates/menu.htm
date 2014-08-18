@@ -1,0 +1,12 @@
+
+{*左側menu*}
+<table>
+           {foreach from=$MENU_DATA key=key item=item}
+                  <tr><td><a href="{$item.FILE_NAME}"><div name="menu" style="width:150px;font-size:12px;">{$item.MENU_NAME}</div></a></td></tr>
+           {/foreach}
+           <tr><td><a href="logout"><div name="menu" style="width:150px;font-size:12px;">{literal}登出{/literal}</div></a></td></tr>
+</table>
+<!--
+1.各倉庫存明細  產生excel(列出barcode號碼)
+2.excel reader
+-->

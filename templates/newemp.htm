@@ -1,0 +1,181 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+</head>
+{literal}
+   <!--基本樣式-->
+	 <link type="text/css" href="css/basic.css" rel="stylesheet" />
+	 <!--jquery ui-->
+		<!--<link type="text/css" href="includes/jquery_ui/css/dark-hive/jquery-ui-1.8.9.custom.css" rel="stylesheet" />-->
+		<link type="text/css" href="includes/jquery_ui/css/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="includes/jquery_ui/js/jquery-ui-1.8.9.custom.min.js"></script>
+	
+		<script type="text/javascript">
+			$(function(){
+			                      $(".jtable th,.edit_table_h th").each(function(){
+ 
+                             $(this).addClass("ui-state-default");
+ 
+                        });
+                         
+                        $(".jtable td,.edit_table_h td").each(function(){
+ 
+                           $(this).addClass("ui-widget-content");
+ 
+                       });
+                        //游標在上面時變色
+                        $(".jtable tr").hover(
+                            function(){
+                             $(this).children("td").addClass("ui-state-hover");
+                            },
+                            function()
+                            {
+                             $(this).children("td").removeClass("ui-state-hover");
+                            }
+                        );
+                        $(".jtable tr").click(function(){
+                           $(this).children("td").toggleClass("ui-state-highlight");
+                       });
+
+                        //$("#menu_type").submit(function(){
+                        $("input[name='submit']").click(function(){
+                                        if ($("input[name='name']").val()==""){
+                                                alert("請輸入姓名!!!");
+                                                return false;
+                                        }
+                                        if ($("input[name='account']").val()==""){
+                                                alert("請輸入帳號!!!");
+                                                return false;
+                                        }
+                                        if ($("input[name='pass']").val()==""){
+                                                alert("請輸入密碼!!!");
+                                                return false;
+                                        }
+                        });
+
+				// Datepicker
+				$('#datepicker').datepicker({
+					inline: true
+				});
+				
+				//button
+				$( "button,input:submit,div[name='menu']").button();
+
+				 //試作頁面切換
+				 
+				
+			});
+		</script>
+		
+			
+		{/literal}
+<body>
+           <table name="main-table"><div name="current-user" style="font-size:15px;">庫別:{$smarty.cookies.wdcbcSTORE}&nbsp;使用者:{$smarty.cookies.wdcbcNAME}
+           {if $smarty.cookies.wdcbcUNACCEPT!="" and $smarty.cookies.wdcbcUNACCEPT!=0}<font color="red">待轉倉/未接收:{$smarty.cookies.wdcbcUNACCEPT}</font>{/if}
+           </div>
+                     
+                     <tr><td valign="top" name="menu-td"><div>
+                     {include file="menu.htm"}
+                     	   </div></td>
+                         <td valign="top"><div style="width:700px;height:600px;text-align:center;">
+                                 <form id="menu_type" action="" method="post" ENCTYPE="multipart/form-data">
+                                 <table class="edit_table_h" style="font-size:12px;">
+                                   <tr>
+                                 		<th colspan="6"><div name="main_title">{$title}</div></th>
+                                 		</tr>
+                                 		
+                                 		<tr>
+                                       <th style="width:100px;"><div style="text-align:center;">{literal}姓名{/literal}</div></th>
+                                       <td style="width:100px;"><div style="text-align:left;padding-left:5px;">
+                                           <input type="text" class="normal-input-text" name="name" value="{$edata.NAME}" style="width:90%"></div>
+                                       </td>
+                                       <th style="width:100px;"><div style="text-align:center;">{literal}聯絡電話1{/literal}</div></th>
+                                       <td style="width:100px;"><div style="text-align:left;padding-left:5px;">
+                                           <input type="text" class="normal-input-text" name="phone1" value="{$edata.PHONE1}" style="width:90%"></div>
+                                       </td>
+                                       <th style="width:100px;"><div style="text-align:center;">{literal}聯絡電話2{/literal}</div></th>
+                                       <td style="width:100px;"><div style="text-align:left;padding-left:5px;">
+                                           <input type="text" class="normal-input-text" name="phone2" value="{$edata.PHONE2}" style="width:90%"></div>
+                                       </td>
+                                   </tr>
+                                 	 <tr>
+                                       <th><div style="text-align:center;">{literal}地址{/literal}</div></th>
+                                       <td colspan="5"><div style="text-align:left;padding-left:5px;">
+                                       <input type="text" class="normal-input-text" name="addr" value="{$edata.ADDR}" style="width:95%"></div></td>
+                                   </tr>
+                                 	 <tr>
+                                       <th><div style="text-align:center;">{literal}帳號{/literal}</div></th>
+                                       <td><div style="text-align:left;padding-left:5px;">
+                                       <input type="text" class="normal-input-text" name="account" value="{$edata.ACCOUNT}" style="width:90%"></div></td>
+                                       <th><div style="text-align:center;">{literal}密碼{/literal}</div></th>
+                                       <td><div style="text-align:left;padding-left:5px;">
+                                       <input type="text" class="normal-input-text" name="pass" value="{$edata.PASS}" style="width:90%"></div></td>
+                                   
+                                       <th><div style="text-align:center;">{literal}預設頁面{/literal}</div></th>
+                                       <td><div style="text-align:left;padding-left:5px;">{html_options name=did options=$menu_option selected=$edata.DID}</div></td>
+                                   </tr>
+                                 	 <tr>
+                                       <th><div style="text-align:center;">{literal}庫別{/literal}</div></th>
+                                       <td><div style="text-align:left;padding-left:5px;">{html_options name=sid options=$store_option selected=$edata.SID}</div></td>
+                                       <th><div style="text-align:center;">{literal}可跨庫別(轉倉){/literal}</div></th>
+                                       <td><div style="text-align:left;padding-left:5px;">
+                                                       <select name="store_flag">
+                                                       <option value=0 {if $edata.STORE_FLAG==0}selected=selected{/if}>關閉</option>
+                                                       <option value=1 {if $edata.STORE_FLAG==1}selected=selected{/if}>開啟</option>
+                                                       </select>
+                                                       </div></td>
+                                       <th><div style="text-align:center;">{literal}開啟/關閉{/literal}</div></th>
+                                       <td><div style="text-align:left;padding-left:5px;"><select name="enable"><option value="Y" {if $edata.ENABLE=="Y"}selected=selected{/if}>開啟</option>
+                                       <option value="N" {if $edata.ENABLE=="N"}selected=selected{/if}>關閉</option></select></div></td>
+                                   </tr>
+                                   
+                                   
+                                 	 <tr>
+                                 	 <td colspan="6" style="text-align:right;">
+                                 	 	   <input type="hidden" name="id" value="{$edata.ID}">
+                                 	 	   <input type="submit" name="gen_emp_list" value="產生報表" style="font-size:12px;padding:5px 10px 2px 10px;" />
+                                 	 	   {if $edit==1}
+                                 	 	   <input type="submit" name="submit" value="編輯" style="font-size:12px;padding:5px 10px 2px 10px;">
+                                 	 	   {else}
+                                 	 	   <input type="submit" name="submit" value="新增" style="font-size:12px;padding:5px 10px 2px 10px;">
+                                 	 	   {/if}
+                                 	 </td>
+                                 	 </tr>
+                                 </table>
+                                 </form>
+                                 <hr>
+                                 <div>
+                                 <table class="jtable" style="width:700px;font-size:12px;">
+                                            <tr>
+                                                <th><div style="text-align:center;width:40px;">{literal}項次{/literal}</div></th>
+                                                <th><div style="text-align:center;width:70px;">{literal}姓名{/literal}</div></th>
+                                                <th><div style="text-align:center;width:80px;">{literal}聯絡電話1{/literal}</div></th>
+                                                <th><div style="text-align:center;width:80px;">{literal}聯絡電話2{/literal}</div></th>
+                                                <th><div style="text-align:center;width:175px;">{literal}地址{/literal}</div></th>
+                                                <th><div style="text-align:center;width:100px;">{literal}帳號{/literal}</div></th>
+                                                <th><div style="text-align:center;width:100px;">{literal}密碼{/literal}</div></th>
+                                                <th><div style="text-align:center;width:35px;">{literal}啟用{/literal}</div></th>
+                                            </tr>
+                                            {foreach name=cc from =$empdata item=item key=key}
+                                            <tr><td><div style="text-align:center;">{$smarty.foreach.cc.iteration}</div></td>
+                                                  <td><div style="text-align:center;"><a href="newemp?edit=1&id={$item.ID}" >{$item.NAME}</a></div></td>
+                                                  <td><div style="text-align:center;">{$item.PHONE1}</div></td>
+                                                  <td><div style="text-align:center;">{$item.PHONE2}</div></td>
+                                                  <td><div style="text-align:center;">{$item.ADDR}</div></td>
+                                                  <td><div style="text-align:center;">{$item.ACCOUNT}</div></td>
+                                                  <td><div style="text-align:center;">{$item.PASS}</div></td>
+                                                  <td><div style="text-align:center;">{$item.ENABLE}</div></td>
+                                            </tr>
+                                            {/foreach}
+                                 <table>
+                                 </div>
+                                 
+                     
+                     </div></td></tr>
+           </table>
+
+</body>
+</html>
+
