@@ -8,3 +8,6 @@
 /includes/smarty
 /phpMyAdmin
 /templates_c
+
+/vendor/
+.env
